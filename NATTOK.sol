@@ -24,7 +24,7 @@ contract nativeToken {
     string public name;
     string public symbol;
     uint8 public decimals = 2;
-    // 18 decimals is the strongly suggested default, avoid changing it
+    // decimals value is 2
     uint256 public totalSupply;
 
     // This creates an array with all balances
@@ -132,20 +132,6 @@ contract nativeToken {
         }
     }
 
-    /**
-     * Destroy tokens
-     *
-     * Remove `_value` tokens from the system irreversibly
-     *
-     * @param _value the amount of money to burn
-     */
-    function burn(uint256 _value) public returns (bool success) {
-        require(balanceOf[msg.sender] >= _value);   // Check if the sender has enough
-        balanceOf[msg.sender] -= _value;            // Subtract from the sender
-        totalSupply -= _value;                      // Updates totalSupply
-        Burn(msg.sender, _value);
-        return true;
-    }
 
     /**
      * Destroy tokens from other account
@@ -166,9 +152,7 @@ contract nativeToken {
     }
 }
 
-/******************************************/
-/*       ADVANCED TOKEN STARTS HERE       */
-/******************************************/
+
 
 contract MyAdvancedToken is owned, nativeToken {
 
@@ -195,23 +179,7 @@ contract MyAdvancedToken is owned, nativeToken {
         Transfer(_from, _to, _value);
     }
 
-    /// @notice Create `mintedAmount` tokens and send it to `target`
-    /// @param target Address to receive the tokens
-    /// @param mintedAmount the amount of tokens it will receive
-    function mintToken(address target, uint256 mintedAmount) onlyOwner public {
-        balanceOf[target] += mintedAmount;
-        totalSupply += mintedAmount;
-        Transfer(0, this, mintedAmount);
-        Transfer(this, target, mintedAmount);
-    }
-
-    /// @notice `freeze? Prevent | Allow` `target` from sending & receiving tokens
-    /// @param target Address to be frozen
-    /// @param freeze either to freeze it or not
-    function freezeAccount(address target, bool freeze) onlyOwner public {
-        frozenAccount[target] = freeze;
-        FrozenFunds(target, freeze);
-    }
+   
 
     /// @notice Allow users to buy tokens for `newBuyPrice` eth
     /// @param newBuyPrice Price users can buy from the contract
