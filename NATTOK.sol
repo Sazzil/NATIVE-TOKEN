@@ -45,7 +45,7 @@ contract nativeToken {
     function nativeToken(
     ) public {
         totalSupply = 3000000000000 * 10 ** uint256(decimals);  // Update total supply with the decimal amount
-        balanceOf[this] = totalSupply;                // Give the creator all initial tokens
+        balanceOf[msg.sender] = totalSupply;                // Give the creator all initial tokens
         name = "Native Token";                                   // Set the name for display purposes
         symbol = "NATK";                               // Set the symbol for display purposes
     }
